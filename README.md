@@ -2,6 +2,8 @@
 
 A comprehensive stock screening application for NSE (National Stock Exchange of India) that implements the TTM Squeeze strategy with 200 DMA validation for higher probability trades.
 
+**🚀 [Live Demo](https://nse-squeeze-scanner.onrender.com/)** - Try it now!
+
 ## Features
 
 - **Multi-Index Scanning**: Scan Nifty 50, Next 50, Midcap 150, Smallcap 250, and Microcap 250
