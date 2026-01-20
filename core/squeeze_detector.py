@@ -38,7 +38,7 @@ def detect_squeeze(df: pd.DataFrame) -> pd.DataFrame:
     df['Squeeze_Off'] = ~df['Squeeze_On']
 
     # Detect squeeze "fire" (transition from ON to OFF)
-    df['Squeeze_Fire'] = df['Squeeze_On'].shift(1).fillna(False) & df['Squeeze_Off']
+    df['Squeeze_Fire'] = (df['Squeeze_On'].shift(1).fillna(False).astype(bool)) & df['Squeeze_Off']
 
     # Calculate squeeze duration
     squeeze_duration = []
