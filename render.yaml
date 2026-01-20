@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: nse-squeeze-scanner
+    env: python
+    region: oregon
+    plan: free
+
+    # Build command
+    buildCommand: pip install -r requirements.txt
+
+    # Start command for Streamlit
+    startCommand: streamlit run app.py
+
+    # Environment variables
+    envVars:
+      - key: STREAMLIT_SERVER_HEADLESS
+        value: true
+      - key: STREAMLIT_SERVER_PORT
+        value: 10000
+      - key: STREAMLIT_SERVER_ADDRESS
+        value: 0.0.0.0
+      - key: STREAMLIT_CLIENT_TOOLBAR_MODE
+        value: viewer
+      - key: STREAMLIT_LOGGER_LEVEL
+        value: info
+
+    # Auto-deploy on push
+    autoDeploy: true

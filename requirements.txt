@@ -9,6 +9,7 @@ requests>=2.31.0
 
 # Visualization
 plotly>=5.18.0
+kaleido>=0.2.1
 
 # Data Export
 openpyxl>=3.1.2
@@ -18,3 +19,6 @@ scipy>=1.11.0
 
 # Utilities
 python-dateutil>=2.8.2
+
+# Production
+gunicorn>=21.2.0
