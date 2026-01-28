@@ -43,117 +43,687 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for beautiful dark theme with improved contrast
-st.markdown("""
-<style>
-    .stApp {
-        background-color: #0E1117;
-    }
-    [data-testid="stSidebar"] {
-        background-color: #1A1D24;
-    }
-    [data-testid="stSidebar"] > div:first-child {
-        background-color: #1A1D24;
-    }
-    /* Improved sidebar text contrast */
-    [data-testid="stSidebar"] .stMarkdown p,
-    [data-testid="stSidebar"] .stMarkdown li,
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .stRadio label,
-    [data-testid="stSidebar"] .stCheckbox label {
-        color: #E8EAED !important;
-        font-weight: 400;
-    }
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3,
-    [data-testid="stSidebar"] .stMarkdown h1,
-    [data-testid="stSidebar"] .stMarkdown h2,
-    [data-testid="stSidebar"] .stMarkdown h3 {
-        color: #FFFFFF !important;
-        font-weight: 600;
-    }
-    /* Main content text */
-    h1, h2, h3 {
-        color: #FAFAFA !important;
-    }
-    [data-testid="stMetricValue"] {
-        font-size: 1.8rem !important;
-        color: #FAFAFA !important;
-    }
-    [data-testid="stMetricLabel"] {
-        color: #B8BCC4 !important;
-    }
-    /* Improved button styling */
-    .stButton > button {
-        background-color: #1E90FF;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 0.5rem 1rem;
-        font-weight: 500;
-    }
-    .stButton > button:hover {
-        background-color: #4169E1;
-    }
-    /* Secondary button styling */
-    .stButton > button[kind="secondary"] {
-        background-color: #2D3748;
-        border: 1px solid #4A5568;
-    }
-    [data-testid="stDataFrame"] {
-        background-color: #1E1E2E;
-        border-radius: 10px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        background-color: #262730;
-        border-radius: 8px;
-        padding: 8px 16px;
-        color: #E8EAED;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #1E90FF !important;
-        color: white !important;
-    }
-    hr {
-        border-color: #3E3E4E;
-    }
-    /* Checkbox styling for better visibility */
-    [data-testid="stSidebar"] .stCheckbox {
-        padding: 4px 0;
-    }
-    /* Slider styling */
-    .stSlider > div > div > div {
-        color: #E8EAED;
-    }
-    /* Caption styling */
-    .stCaption {
-        color: #9CA3AF !important;
-    }
-    /* Info box styling */
-    .stAlert {
-        background-color: #1E2530;
-        border-radius: 8px;
-    }
-    /* Status badges */
-    .status-valid {
-        background-color: rgba(0, 210, 106, 0.2);
-        color: #00D26A;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-weight: 500;
-    }
-    .status-invalid {
-        background-color: rgba(255, 75, 75, 0.2);
-        color: #FF4B4B;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-weight: 500;
-    }
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-</style>
-""", unsafe_allow_html=True)
+# ========== MOBILE-RESPONSIVE CSS STYLING ==========
+def apply_mobile_responsive_styling():
+    """Apply comprehensive mobile-responsive CSS with dark theme"""
+    st.markdown("""
+    <style>
+        /* ============================================
+           CSS VARIABLES - DARK THEME
+           ============================================ */
+        :root {
+            --primary-color: #1E90FF;
+            --primary-hover: #4169E1;
+            --secondary-color: #10B981;
+            --danger-color: #EF4444;
+            --warning-color: #F59E0B;
+            --success-color: #00D26A;
+            --text-primary: #FAFAFA;
+            --text-secondary: #B8BCC4;
+            --text-muted: #9CA3AF;
+            --bg-primary: #0E1117;
+            --bg-secondary: #1A1D24;
+            --bg-card: #1E1E2E;
+            --border-color: #3E3E4E;
+        }
+
+        /* ============================================
+           BASE STYLES
+           ============================================ */
+        .stApp {
+            background-color: var(--bg-primary);
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* Improve text readability */
+        body, p, span, div, label, li, td, th {
+            color: var(--text-primary) !important;
+            line-height: 1.6 !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary) !important;
+            font-weight: 600 !important;
+            margin-bottom: 1rem !important;
+        }
+
+        /* ============================================
+           MOBILE NAVIGATION (SIDEBAR)
+           ============================================ */
+        [data-testid="stSidebar"] {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0.5rem;
+        }
+
+        [data-testid="stSidebar"] > div:first-child {
+            background-color: var(--bg-secondary);
+        }
+
+        /* Improved sidebar text contrast */
+        [data-testid="stSidebar"] .stMarkdown p,
+        [data-testid="stSidebar"] .stMarkdown li,
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] .stRadio label,
+        [data-testid="stSidebar"] .stCheckbox label {
+            color: #E8EAED !important;
+            font-weight: 400;
+        }
+
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3,
+        [data-testid="stSidebar"] .stMarkdown h1,
+        [data-testid="stSidebar"] .stMarkdown h2,
+        [data-testid="stSidebar"] .stMarkdown h3 {
+            color: #FFFFFF !important;
+            font-weight: 600;
+        }
+
+        /* Navigation radio items styling */
+        [data-testid="stSidebar"] .stRadio > div {
+            gap: 0.5rem;
+        }
+
+        [data-testid="stSidebar"] .stRadio > div > label {
+            background-color: var(--bg-card);
+            padding: 12px 16px !important;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+
+        [data-testid="stSidebar"] .stRadio > div > label:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateX(4px);
+        }
+
+        /* Mobile sidebar adjustments */
+        @media (max-width: 768px) {
+            [data-testid="stSidebar"] {
+                min-width: 260px !important;
+                max-width: 280px !important;
+            }
+
+            [data-testid="stSidebar"] .stRadio > div > label {
+                padding: 14px 12px !important;
+                font-size: 15px !important;
+            }
+        }
+
+        /* ============================================
+           MAIN CONTENT AREA
+           ============================================ */
+        .main .block-container {
+            padding: 1rem !important;
+            max-width: 100% !important;
+        }
+
+        @media (min-width: 768px) {
+            .main .block-container {
+                padding: 2rem 3rem !important;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .main .block-container {
+                max-width: 1400px !important;
+                margin: 0 auto !important;
+            }
+        }
+
+        /* ============================================
+           BUTTONS & INTERACTIVE ELEMENTS
+           ============================================ */
+        .stButton > button {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 8px !important;
+            padding: 12px 24px !important;
+            font-weight: 500 !important;
+            font-size: 16px !important;
+            transition: all 0.3s ease !important;
+            cursor: pointer !important;
+            min-height: 44px;
+            width: 100%;
+        }
+
+        .stButton > button:hover {
+            background-color: var(--primary-hover) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 144, 255, 0.4) !important;
+        }
+
+        .stButton > button:active {
+            transform: translateY(0);
+        }
+
+        /* Secondary button styling */
+        .stButton > button[kind="secondary"] {
+            background-color: #2D3748 !important;
+            border: 1px solid #4A5568 !important;
+        }
+
+        /* Download button */
+        .stDownloadButton button {
+            background-color: var(--success-color) !important;
+            min-height: 44px;
+        }
+
+        .stDownloadButton button:hover {
+            background-color: #059669 !important;
+        }
+
+        /* ============================================
+           FORMS & INPUTS
+           ============================================ */
+        .stTextInput input,
+        .stNumberInput input,
+        .stSelectbox select,
+        .stMultiSelect > div,
+        .stTextArea textarea {
+            border: 2px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            padding: 12px !important;
+            font-size: 16px !important;
+            color: var(--text-primary) !important;
+            background-color: var(--bg-card) !important;
+            min-height: 44px;
+        }
+
+        .stTextInput input:focus,
+        .stNumberInput input:focus,
+        .stSelectbox select:focus,
+        .stTextArea textarea:focus {
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2) !important;
+            outline: none !important;
+        }
+
+        /* Checkbox and Radio - Larger touch targets */
+        .stCheckbox, .stRadio {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+
+        [data-testid="stSidebar"] .stCheckbox {
+            padding: 4px 0;
+        }
+
+        /* ============================================
+           DATAFRAMES & TABLES
+           ============================================ */
+        [data-testid="stDataFrame"] {
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .dataframe {
+            width: 100% !important;
+            overflow-x: auto !important;
+        }
+
+        .dataframe table {
+            font-size: 14px !important;
+            border-collapse: collapse !important;
+        }
+
+        .dataframe th {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+            font-weight: 600 !important;
+            padding: 12px 8px !important;
+            text-align: left !important;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .dataframe td {
+            padding: 12px 8px !important;
+            border-bottom: 1px solid var(--border-color) !important;
+        }
+
+        @media (max-width: 768px) {
+            .dataframe table {
+                font-size: 12px !important;
+            }
+
+            .dataframe th, .dataframe td {
+                padding: 8px 6px !important;
+            }
+        }
+
+        /* ============================================
+           TABS
+           ============================================ */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            flex-wrap: nowrap;
+        }
+
+        .stTabs [data-baseweb="tab"] {
+            background-color: #262730;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: #E8EAED;
+            font-weight: 500;
+            white-space: nowrap;
+            min-height: 44px;
+        }
+
+        .stTabs [aria-selected="true"] {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        @media (max-width: 768px) {
+            .stTabs [data-baseweb="tab"] {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+        }
+
+        /* ============================================
+           METRICS & STATS
+           ============================================ */
+        [data-testid="stMetricValue"] {
+            font-size: 1.8rem !important;
+            font-weight: 700 !important;
+            color: var(--text-primary) !important;
+        }
+
+        [data-testid="stMetricLabel"] {
+            font-size: 14px !important;
+            color: var(--text-secondary) !important;
+            font-weight: 500 !important;
+        }
+
+        [data-testid="stMetricDelta"] {
+            font-size: 14px !important;
+        }
+
+        @media (max-width: 768px) {
+            [data-testid="stMetricValue"] {
+                font-size: 1.4rem !important;
+            }
+
+            [data-testid="stMetricLabel"] {
+                font-size: 12px !important;
+            }
+        }
+
+        /* ============================================
+           ALERTS & NOTIFICATIONS
+           ============================================ */
+        .stAlert {
+            padding: 16px !important;
+            border-radius: 8px !important;
+            margin-bottom: 1rem !important;
+            background-color: #1E2530;
+        }
+
+        /* ============================================
+           EXPANDERS
+           ============================================ */
+        .stExpander {
+            background-color: var(--bg-card) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 8px !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .streamlit-expanderHeader {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+            font-weight: 600 !important;
+            padding: 16px !important;
+            border-radius: 8px !important;
+            min-height: 44px;
+        }
+
+        /* ============================================
+           CHARTS & GRAPHS
+           ============================================ */
+        .js-plotly-plot, .plotly {
+            width: 100% !important;
+        }
+
+        @media (max-width: 768px) {
+            .js-plotly-plot .plotly {
+                min-height: 300px !important;
+            }
+        }
+
+        /* ============================================
+           SLIDERS
+           ============================================ */
+        .stSlider {
+            padding: 20px 0;
+        }
+
+        .stSlider > div > div > div {
+            color: #E8EAED;
+        }
+
+        @media (max-width: 768px) {
+            .stSlider [role="slider"] {
+                width: 24px !important;
+                height: 24px !important;
+            }
+        }
+
+        /* ============================================
+           COLUMNS & LAYOUT - RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            [data-testid="column"] {
+                width: 100% !important;
+                flex: 1 1 100% !important;
+                min-width: 100% !important;
+            }
+
+            /* Stack columns vertically on mobile */
+            .stHorizontalBlock {
+                flex-wrap: wrap !important;
+            }
+        }
+
+        /* ============================================
+           STATUS BADGES
+           ============================================ */
+        .status-valid {
+            background-color: rgba(0, 210, 106, 0.2);
+            color: #00D26A;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .status-invalid {
+            background-color: rgba(255, 75, 75, 0.2);
+            color: #FF4B4B;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        /* ============================================
+           MISC ELEMENTS
+           ============================================ */
+        hr {
+            border-color: var(--border-color);
+        }
+
+        .stCaption {
+            color: var(--text-muted) !important;
+        }
+
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+
+        /* ============================================
+           SCROLLBARS - DARK THEME
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* ============================================
+           MOBILE UTILITY CLASSES
+           ============================================ */
+        .mobile-hidden {
+            display: block;
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-hidden {
+                display: none !important;
+            }
+
+            .mobile-only {
+                display: block !important;
+            }
+        }
+
+        /* ============================================
+           ACCESSIBILITY
+           ============================================ */
+        *:focus-visible {
+            outline: 2px solid var(--primary-color) !important;
+            outline-offset: 2px !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ============================================
+           MOBILE INFO BOX
+           ============================================ */
+        .mobile-tip-box {
+            background-color: rgba(30, 144, 255, 0.15);
+            border-left: 4px solid var(--primary-color);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 16px;
+        }
+
+        .mobile-tip-box p {
+            margin: 0;
+            color: #E8EAED !important;
+            font-size: 14px;
+        }
+
+        /* ============================================
+           POST-BREAKOUT PAGE STYLING
+           ============================================ */
+        .post-breakout-header {
+            background: linear-gradient(135deg, #1E90FF 0%, #4169E1 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .post-breakout-header h2 {
+            color: white !important;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .post-breakout-header p {
+            color: rgba(255, 255, 255, 0.9) !important;
+            margin: 0;
+            font-size: 16px;
+        }
+
+        /* Performance card styling */
+        .perf-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .perf-card-positive {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .perf-card-negative {
+            border-left: 4px solid var(--danger-color);
+        }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+# Apply mobile-responsive styling
+apply_mobile_responsive_styling()
+
+
+# ========== MOBILE HELPER FUNCTIONS ==========
+def add_mobile_navigation_hint():
+    """Add a helpful navigation hint for mobile users"""
+    st.markdown("""
+    <div class="mobile-only">
+        <div class="mobile-tip-box">
+            <p>📱 <strong>Mobile Tip:</strong> Tap ☰ in the top-left to access navigation menu</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+def add_back_to_top_button():
+    """Add a floating 'Back to Top' button for long pages"""
+    st.markdown("""
+    <style>
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(30, 144, 255, 0.4);
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        #back-to-top:hover {
+            background-color: #4169E1;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            #back-to-top {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+                bottom: 16px;
+                right: 16px;
+            }
+        }
+    </style>
+
+    <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">
+        ↑
+    </button>
+
+    <script>
+        window.onscroll = function() {
+            const btn = document.getElementById('back-to-top');
+            if (btn) {
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    btn.style.display = 'block';
+                } else {
+                    btn.style.display = 'none';
+                }
+            }
+        };
+    </script>
+    """, unsafe_allow_html=True)
+
+
+def create_mobile_friendly_metrics(metrics_data):
+    """
+    Create responsive metrics that stack on mobile.
+    metrics_data: list of tuples [(label, value, delta), ...]
+    """
+    # On mobile, show 2 columns max; on desktop show up to 4
+    num_metrics = len(metrics_data)
+
+    if num_metrics <= 2:
+        cols = st.columns(num_metrics)
+    elif num_metrics <= 4:
+        cols = st.columns(min(num_metrics, 4))
+    else:
+        # For more than 4 metrics, create multiple rows
+        cols = st.columns(4)
+
+    for i, (label, value, delta) in enumerate(metrics_data):
+        col_idx = i % len(cols)
+        with cols[col_idx]:
+            if delta:
+                st.metric(label, value, delta)
+            else:
+                st.metric(label, value)
+
+
+def render_responsive_table(df, key_columns=None, height=400):
+    """
+    Render a table that's optimized for both desktop and mobile.
+    On mobile, shows fewer columns with option to expand.
+
+    Args:
+        df: DataFrame to display
+        key_columns: List of essential columns to show on mobile (first 3-4)
+        height: Table height in pixels
+    """
+    if df.empty:
+        st.info("No data to display.")
+        return
+
+    # Show full table with horizontal scroll
+    st.dataframe(
+        df,
+        use_container_width=True,
+        hide_index=True,
+        height=height
+    )
+
+    # Mobile hint
+    st.markdown("""
+    <div class="mobile-only">
+        <p style="color: #9CA3AF; font-size: 12px; text-align: center; margin-top: 8px;">
+            ← Swipe table to see more columns →
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 # Period mapping
 PERIOD_OPTIONS = {
@@ -734,6 +1304,12 @@ def render_scanner():
     """Render the main scanner page"""
     st.title("🔍 NSE Squeeze Scanner")
     st.caption("Scan Indian stocks for Bollinger Bands squeeze patterns with 200 DMA validation")
+
+    # Mobile navigation hint
+    add_mobile_navigation_hint()
+
+    # Add back to top button for long pages
+    add_back_to_top_button()
 
     db = DatabaseManager()
     watchlist = db.get_watchlist()
@@ -2136,224 +2712,678 @@ def render_alerts():
             st.divider()
 
 
-def render_help():
-    """Render comprehensive help page"""
-    st.title("ℹ️ Help & Documentation")
-    st.caption("Learn how to use the NSE Squeeze Scanner effectively")
+def render_post_breakout():
+    """Render post-breakout analysis page"""
+    st.title("📈 Post-Breakout Analysis")
+    st.caption("Track performance of stocks after squeeze breakouts")
 
-    if st.button("← Back to Scanner"):
+    # Mobile tip
+    st.markdown("""
+    <div class="mobile-only">
+        <div class="mobile-tip-box">
+            <p>📱 <strong>Tip:</strong> Swipe tables horizontally to see all data</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Header section with gradient
+    st.markdown("""
+    <div class="post-breakout-header">
+        <h2>📊 Breakout Performance Tracker</h2>
+        <p>Analyze how stocks perform after squeeze breakout signals are triggered</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Check if scan results exist
+    if 'scan_results' not in st.session_state or st.session_state.scan_results.empty:
+        st.warning("⚠️ No scan results available. Please run a scan first to see post-breakout analysis.")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🔍 Go to Scanner", use_container_width=True):
+                st.session_state.current_page = "Scanner"
+                st.rerun()
+        with col2:
+            if st.button("📖 View Help", use_container_width=True):
+                st.session_state.current_page = "Help"
+                st.rerun()
+        return
+
+    results_df = st.session_state.scan_results
+
+    # Filter for fired squeezes
+    fired_df = results_df[results_df['squeeze_status'] == 'Squeeze Fired'].copy() if 'squeeze_status' in results_df.columns else pd.DataFrame()
+
+    # Summary metrics
+    st.subheader("📊 Breakout Summary")
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        total_scanned = len(results_df)
+        st.metric("Total Scanned", total_scanned)
+
+    with col2:
+        total_fired = len(fired_df)
+        st.metric("Squeezes Fired", total_fired)
+
+    with col3:
+        if not fired_df.empty and 'Breakout' in fired_df.columns:
+            bullish_count = len(fired_df[fired_df['Breakout'].str.contains('Bullish', case=False, na=False)])
+            st.metric("Bullish Breakouts", bullish_count, delta=f"{bullish_count/total_fired*100:.0f}%" if total_fired > 0 else "0%")
+        else:
+            st.metric("Bullish Breakouts", 0)
+
+    with col4:
+        if not fired_df.empty and 'Breakout' in fired_df.columns:
+            bearish_count = len(fired_df[fired_df['Breakout'].str.contains('Bearish', case=False, na=False)])
+            st.metric("Bearish Breakouts", bearish_count, delta=f"{bearish_count/total_fired*100:.0f}%" if total_fired > 0 else "0%")
+        else:
+            st.metric("Bearish Breakouts", 0)
+
+    st.divider()
+
+    # Tabs for different views
+    tab1, tab2, tab3 = st.tabs(["🔥 Fired Squeezes", "📊 Performance Analysis", "📋 All Results"])
+
+    with tab1:
+        st.subheader("🔥 Recently Fired Squeezes")
+
+        if fired_df.empty:
+            st.info("No squeeze-fired signals found in the current scan results.")
+        else:
+            # Display columns to show
+            display_cols = ['symbol', 'current_price', 'Breakout', 'signal_valid', 'bb_width', 'momentum_direction', 'squeeze_duration']
+            available_cols = [col for col in display_cols if col in fired_df.columns]
+
+            if available_cols:
+                display_df = fired_df[available_cols].copy()
+
+                # Rename columns for better readability
+                rename_map = {
+                    'symbol': 'Symbol',
+                    'current_price': 'Price',
+                    'Breakout': 'Breakout Type',
+                    'signal_valid': 'Valid Signal',
+                    'bb_width': 'BB Width %',
+                    'momentum_direction': 'Momentum',
+                    'squeeze_duration': 'Duration (Days)'
+                }
+                display_df = display_df.rename(columns={k: v for k, v in rename_map.items() if k in display_df.columns})
+
+                st.dataframe(display_df, use_container_width=True, hide_index=True)
+
+                # Stock selection for detailed view
+                st.divider()
+                st.subheader("📈 View Stock Details")
+
+                selected_symbol = st.selectbox(
+                    "Select a stock to view details:",
+                    options=fired_df['symbol'].tolist() if 'symbol' in fired_df.columns else [],
+                    format_func=lambda x: f"{x} - {'Bullish' if 'Bullish' in str(fired_df[fired_df['symbol']==x]['Breakout'].values[0]) else 'Bearish'}" if 'symbol' in fired_df.columns and 'Breakout' in fired_df.columns else x
+                )
+
+                if selected_symbol:
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("📊 View Full Details", use_container_width=True):
+                            st.session_state.selected_stock = selected_symbol
+                            st.session_state.current_page = "Stock Detail"
+                            st.rerun()
+                    with col2:
+                        if st.button("⭐ Add to Watchlist", use_container_width=True):
+                            db = DatabaseManager()
+                            stock_data = fired_df[fired_df['symbol'] == selected_symbol].iloc[0] if 'symbol' in fired_df.columns else {}
+                            db.add_to_watchlist(
+                                selected_symbol,
+                                stock_data.get('current_price', 0),
+                                notes=f"Added from Post-Breakout - {stock_data.get('Breakout', 'Unknown')} breakout"
+                            )
+                            st.success(f"✅ {selected_symbol} added to watchlist!")
+            else:
+                st.info("No display columns available in the data.")
+
+    with tab2:
+        st.subheader("📊 Breakout Performance Analysis")
+
+        if fired_df.empty:
+            st.info("No fired squeezes available for performance analysis.")
+        else:
+            # Performance by breakout type
+            st.markdown("#### Performance by Breakout Type")
+
+            if 'Breakout' in fired_df.columns:
+                # Bullish breakouts analysis
+                bullish_df = fired_df[fired_df['Breakout'].str.contains('Bullish', case=False, na=False)]
+                bearish_df = fired_df[fired_df['Breakout'].str.contains('Bearish', case=False, na=False)]
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    st.markdown("""
+                    <div class="perf-card perf-card-positive">
+                        <h4 style="color: #00D26A !important; margin: 0 0 0.5rem 0;">📈 Bullish Breakouts</h4>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    if not bullish_df.empty:
+                        st.metric("Count", len(bullish_df))
+                        if 'signal_valid' in bullish_df.columns:
+                            valid_count = bullish_df['signal_valid'].sum()
+                            st.metric("Valid Signals", f"{valid_count} ({valid_count/len(bullish_df)*100:.0f}%)")
+                        if 'bb_width' in bullish_df.columns:
+                            st.metric("Avg BB Width", f"{bullish_df['bb_width'].mean():.2f}%")
+                        if 'squeeze_duration' in bullish_df.columns:
+                            st.metric("Avg Squeeze Duration", f"{bullish_df['squeeze_duration'].mean():.1f} days")
+                    else:
+                        st.info("No bullish breakouts")
+
+                with col2:
+                    st.markdown("""
+                    <div class="perf-card perf-card-negative">
+                        <h4 style="color: #EF4444 !important; margin: 0 0 0.5rem 0;">📉 Bearish Breakouts</h4>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    if not bearish_df.empty:
+                        st.metric("Count", len(bearish_df))
+                        if 'signal_valid' in bearish_df.columns:
+                            valid_count = bearish_df['signal_valid'].sum()
+                            st.metric("Valid Signals", f"{valid_count} ({valid_count/len(bearish_df)*100:.0f}%)")
+                        if 'bb_width' in bearish_df.columns:
+                            st.metric("Avg BB Width", f"{bearish_df['bb_width'].mean():.2f}%")
+                        if 'squeeze_duration' in bearish_df.columns:
+                            st.metric("Avg Squeeze Duration", f"{bearish_df['squeeze_duration'].mean():.1f} days")
+                    else:
+                        st.info("No bearish breakouts")
+
+            # BB Width distribution chart
+            st.divider()
+            st.markdown("#### BB Width Distribution")
+
+            if 'bb_width' in fired_df.columns and not fired_df['bb_width'].isna().all():
+                fig = go.Figure()
+
+                fig.add_trace(go.Histogram(
+                    x=fired_df['bb_width'],
+                    nbinsx=20,
+                    marker_color='#1E90FF',
+                    opacity=0.8,
+                    name='BB Width Distribution'
+                ))
+
+                fig.update_layout(
+                    title="BB Width % Distribution of Fired Squeezes",
+                    xaxis_title="BB Width %",
+                    yaxis_title="Count",
+                    template="plotly_dark",
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    height=400
+                )
+
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("BB Width data not available for chart.")
+
+            # Squeeze duration distribution
+            if 'squeeze_duration' in fired_df.columns and not fired_df['squeeze_duration'].isna().all():
+                st.markdown("#### Squeeze Duration Distribution")
+
+                fig2 = go.Figure()
+
+                fig2.add_trace(go.Histogram(
+                    x=fired_df['squeeze_duration'],
+                    nbinsx=15,
+                    marker_color='#10B981',
+                    opacity=0.8,
+                    name='Duration Distribution'
+                ))
+
+                fig2.update_layout(
+                    title="Squeeze Duration Distribution (Days)",
+                    xaxis_title="Duration (Days)",
+                    yaxis_title="Count",
+                    template="plotly_dark",
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    height=400
+                )
+
+                st.plotly_chart(fig2, use_container_width=True)
+
+    with tab3:
+        st.subheader("📋 All Scan Results")
+
+        if results_df.empty:
+            st.info("No scan results available.")
+        else:
+            # Filter options
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                status_filter = st.multiselect(
+                    "Squeeze Status",
+                    options=['Squeeze ON', 'Squeeze OFF', 'Squeeze Fired'],
+                    default=['Squeeze ON', 'Squeeze OFF', 'Squeeze Fired'],
+                    key="post_breakout_status_filter"
+                )
+
+            with col2:
+                if 'Breakout' in results_df.columns:
+                    breakout_filter = st.multiselect(
+                        "Breakout Type",
+                        options=['Bullish', 'Bearish', '-'],
+                        default=['Bullish', 'Bearish', '-'],
+                        key="post_breakout_type_filter"
+                    )
+                else:
+                    breakout_filter = None
+
+            with col3:
+                valid_only = st.checkbox("Valid Signals Only", value=False, key="post_breakout_valid_filter")
+
+            # Apply filters
+            filtered_df = results_df.copy()
+
+            if 'squeeze_status' in filtered_df.columns and status_filter:
+                filtered_df = filtered_df[filtered_df['squeeze_status'].isin(status_filter)]
+
+            if breakout_filter and 'Breakout' in filtered_df.columns:
+                mask = filtered_df['Breakout'].apply(lambda x: any(bt in str(x) for bt in breakout_filter))
+                filtered_df = filtered_df[mask]
+
+            if valid_only and 'signal_valid' in filtered_df.columns:
+                filtered_df = filtered_df[filtered_df['signal_valid'] == True]
+
+            # Display filtered results
+            st.write(f"Showing {len(filtered_df)} of {len(results_df)} stocks")
+
+            # Select columns to display
+            display_cols = ['symbol', 'current_price', 'squeeze_status', 'Breakout', 'signal_valid', 'bb_width', 'momentum_direction']
+            available_cols = [col for col in display_cols if col in filtered_df.columns]
+
+            if available_cols:
+                st.dataframe(filtered_df[available_cols], use_container_width=True, hide_index=True, height=500)
+
+                # Export option
+                st.divider()
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    csv_data = filtered_df.to_csv(index=False)
+                    st.download_button(
+                        label="📥 Download as CSV",
+                        data=csv_data,
+                        file_name=f"post_breakout_analysis_{datetime.now().strftime('%Y%m%d')}.csv",
+                        mime="text/csv",
+                        use_container_width=True
+                    )
+
+                with col2:
+                    if st.button("🔄 Refresh Scan", use_container_width=True):
+                        st.session_state.current_page = "Scanner"
+                        st.rerun()
+
+    # Back to scanner button
+    st.divider()
+    if st.button("← Back to Scanner", use_container_width=True):
         st.session_state.current_page = "Scanner"
         st.rerun()
 
+
+def render_help():
+    """Render comprehensive help page with mobile-friendly tabs"""
+    st.title("ℹ️ Help & Documentation")
+    st.caption("Learn how to use the NSE Squeeze Scanner effectively")
+
+    # Mobile tip
+    st.markdown("""
+    <div class="mobile-only">
+        <div class="mobile-tip-box">
+            <p>📱 <strong>Tip:</strong> Swipe tabs horizontally to see all sections</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Mobile-friendly tabs for main sections
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "📖 Getting Started",
+        "📊 Indicators",
+        "🎯 Strategy",
+        "❓ FAQ"
+    ])
+
+    with tab1:
+        st.markdown("""
+        ## 🚀 Getting Started
+
+        Welcome to NSE Squeeze Scanner! This tool helps you identify potential breakout opportunities in Indian stocks using the TTM Squeeze indicator.
+
+        ### How to Use This App
+
+        #### 1️⃣ Select Indices
+        - Navigate to the **Scanner** page
+        - Choose from Nifty 50, Midcap, Smallcap, or Sectoral indices
+        - You can select multiple indices at once
+        - Click **"Scan Stocks"** to start analysis
+
+        #### 2️⃣ Review Results
+        - View all stocks with potential breakouts in the results table
+        - Use filters to narrow down results by squeeze status, breakout type, etc.
+        - Sort by any column to find the best setups
+
+        #### 3️⃣ Analyze Individual Stocks
+        - Click on any stock row or select from dropdown to see detailed analysis
+        - View price charts with squeeze indicators
+        - Check historical squeeze performance
+
+        #### 4️⃣ Track Breakouts
+        - Visit the **Post-Breakout** page to see all fired squeezes
+        - Analyze performance metrics and patterns
+        - Download results for further analysis
+
+        ### 📱 Mobile Tips
+        - Use the **sidebar menu** (tap ☰ or swipe from left) to navigate between pages
+        - Tables scroll horizontally - **swipe left/right** to see all columns
+        - Rotate device to **landscape mode** for better chart viewing
+        - Tap on expandable sections to reveal more details
+
+        ---
+
+        ### Quick Start Checklist
+        - [ ] Go to Scanner page
+        - [ ] Select at least one index (e.g., Nifty 50)
+        - [ ] Click "Scan Stocks"
+        - [ ] Review stocks with "Squeeze Fired" status
+        - [ ] Check if signals are "Valid" (aligned with 200 DMA)
+        - [ ] Add interesting stocks to Watchlist
+        """)
+
+        st.info("💡 **Pro Tip:** Start with Nifty 50 for the most liquid stocks, then expand to Midcap and Smallcap for more opportunities.")
+
+    with tab2:
+        st.markdown("""
+        ## 📊 Technical Indicators Explained
+
+        ### Bollinger Bands (BB)
+
+        Bollinger Bands are volatility bands placed above and below a moving average.
+
+        | Component | Calculation |
+        |-----------|-------------|
+        | **Middle Band** | 20-period Simple Moving Average (SMA) |
+        | **Upper Band** | Middle Band + (2 × Standard Deviation) |
+        | **Lower Band** | Middle Band - (2 × Standard Deviation) |
+
+        **BB Width Formula:**
+        ```
+        BB Width % = ((Upper - Lower) / Middle) × 100
+        ```
+        - Lower BB Width = Tighter squeeze = Bigger potential breakout
+        - Use the BB Width slider to filter stocks with tighter squeezes
+
+        ---
+
+        ### Keltner Channels (KC)
+
+        Keltner Channels use Average True Range (ATR) to define volatility.
+
+        | Component | Calculation |
+        |-----------|-------------|
+        | **Middle Line** | 20-period EMA |
+        | **Upper Channel** | EMA + (1.5 × ATR) |
+        | **Lower Channel** | EMA - (1.5 × ATR) |
+
+        - More stable than Bollinger Bands due to ATR smoothing
+        - Used in conjunction with BB to detect squeeze conditions
+
+        ---
+
+        ### TTM Squeeze Indicator
+
+        The squeeze occurs when Bollinger Bands move **inside** Keltner Channels, indicating low volatility.
+
+        | Status | Meaning | Visual |
+        |--------|---------|--------|
+        | **Squeeze ON** 🟢 | BB inside KC - volatility contracting | Green dots |
+        | **Squeeze OFF** ⚪ | BB outside KC - normal volatility | Gray dots |
+        | **Squeeze FIRED** 🔴 | Just transitioned from ON to OFF | Red signal |
+
+        ---
+
+        ### Momentum Oscillator
+
+        The momentum indicator shows both direction and strength of price movement.
+
+        | State | Direction | Strength | Signal |
+        |-------|-----------|----------|--------|
+        | **BULLISH_UP** 📈 | Positive | Increasing | Strongest buy |
+        | **BULLISH_DOWN** | Positive | Decreasing | Weakening buy |
+        | **BEARISH_DOWN** 📉 | Negative | Increasing | Strongest sell |
+        | **BEARISH_UP** | Negative | Decreasing | Weakening sell |
+
+        **Histogram Colors:**
+        - 🟢 Lime Green: Bullish momentum increasing
+        - 🟢 Dark Green: Bullish momentum decreasing
+        - 🔴 Red: Bearish momentum increasing
+        - 🔴 Dark Red: Bearish momentum decreasing
+
+        ---
+
+        ### 200-Day Moving Average (200 DMA)
+
+        The 200 DMA is a long-term trend indicator used to validate breakout signals.
+
+        **Signal Validation Rules:**
+        - **Bullish signals** are valid only when price is **ABOVE** the 200 DMA
+        - **Bearish signals** are valid only when price is **BELOW** the 200 DMA
+
+        | Price vs 200 DMA | Bullish Signal | Bearish Signal |
+        |-----------------|----------------|----------------|
+        | Above 200 DMA | ✅ Valid | ⚠️ Invalid |
+        | Below 200 DMA | ⚠️ Invalid | ✅ Valid |
+        """)
+
+    with tab3:
+        st.markdown("""
+        ## 🎯 Trading Strategy
+
+        ### The TTM Squeeze Strategy
+
+        #### Step 1: Identify Squeeze
+        Markets alternate between periods of low volatility (consolidation) and high volatility (trending). The Squeeze indicator finds these consolidation periods.
+
+        #### Step 2: Wait for Squeeze Fire
+        When Bollinger Bands break out of Keltner Channels, it signals the end of consolidation and the potential beginning of a new trend.
+
+        #### Step 3: Determine Direction
+        Use the momentum oscillator to determine the breakout direction:
+
+        **📈 Bullish Setup:**
+        - Squeeze fires (transitions from ON to OFF)
+        - Momentum turns positive (green histogram)
+        - Price closes above upper Bollinger Band
+        - **CRITICAL:** Price must be above 200 DMA ✅
+
+        **📉 Bearish Setup:**
+        - Squeeze fires (transitions from ON to OFF)
+        - Momentum turns negative (red histogram)
+        - Price closes below lower Bollinger Band
+        - **CRITICAL:** Price must be below 200 DMA ✅
+
+        ---
+
+        ### ⚠️ Important Rules
+
+        #### Signal Validation
+        | Signal Type | 200 DMA Requirement | Result |
+        |-------------|---------------------|--------|
+        | Bullish | Price ABOVE 200 DMA | ✅ Valid |
+        | Bullish | Price BELOW 200 DMA | ❌ Invalid |
+        | Bearish | Price BELOW 200 DMA | ✅ Valid |
+        | Bearish | Price ABOVE 200 DMA | ❌ Invalid |
+
+        #### Entry Points
+        - **Aggressive:** Enter immediately on squeeze fire
+        - **Conservative:** Wait for next candle confirmation
+
+        #### Risk Management
+        - **Stop Loss:** Recent swing low (bullish) or swing high (bearish)
+        - **Take Profit:** When momentum starts weakening
+        - **Position Size:** Never risk more than 1-2% per trade
+
+        ---
+
+        ### 📈 Success Tips
+
+        1. **Always check 200 DMA position** - This is non-negotiable
+        2. **Look for tight squeezes** - Lower BB Width = bigger potential move
+        3. **Confirm with volume** - Volume should expand on breakout
+        4. **Use proper risk management** - Define stop loss before entry
+        5. **Don't fight the trend** - Trade with the larger trend direction
+        6. **Be patient** - Wait for the right setup, don't force trades
+        7. **Track your trades** - Use the Post-Breakout page to analyze results
+        """)
+
+        st.warning("⚠️ **Disclaimer:** This tool is for educational and informational purposes only. Always do your own research and consult with a financial advisor before making trading decisions.")
+
+    with tab4:
+        st.markdown("""
+        ## ❓ Frequently Asked Questions
+
+        ### General Questions
+
+        **Q: How often is data updated?**
+        A: Data is fetched from NSE in real-time when you run a scan. Historical data is cached to improve performance and reduce API load.
+
+        **Q: Can I use this for intraday trading?**
+        A: This scanner is designed for **daily timeframe** analysis. For intraday trading, you would need real-time tick data which is not currently supported.
+
+        **Q: How accurate are the signals?**
+        A: No trading signal is 100% accurate. The squeeze indicator identifies potential opportunities, but you should always use proper risk management and combine with your own analysis.
+
+        ---
+
+        ### Technical Questions
+
+        **Q: What is a "valid" signal?**
+        A: A valid signal meets the 200 DMA criteria:
+        - Bullish signals: Price must be ABOVE 200 DMA
+        - Bearish signals: Price must be BELOW 200 DMA
+
+        **Q: Why do some signals show as invalid?**
+        A: Invalid signals don't meet the 200 DMA requirement. Trading against the long-term trend carries higher risk. These signals are still shown but should be treated with caution.
+
+        **Q: How is BB Width calculated?**
+        A: `BB Width % = ((Upper Band - Lower Band) / Middle Band) × 100`
+
+        **Q: What squeeze duration should I look for?**
+        A: Longer squeezes (7+ days) often lead to bigger breakouts, but there's no magic number. Use the duration filter to experiment.
+
+        ---
+
+        ### Mobile Usage
+
+        **Q: How do I navigate on mobile?**
+        A: Tap the **hamburger menu (☰)** in the top-left corner or swipe from the left edge to open the navigation sidebar.
+
+        **Q: Why can't I see all table columns?**
+        A: Tables scroll horizontally on mobile. Swipe left/right to see all columns.
+
+        **Q: Charts are hard to read on mobile**
+        A: Try rotating your device to **landscape mode** for better chart viewing.
+
+        ---
+
+        ### Data & Privacy
+
+        **Q: Is my data stored?**
+        A: No personal data is collected. Scan results are stored only in your browser session and cleared when you close the app.
+
+        **Q: Can I export my results?**
+        A: Yes! Use the **"Download CSV"** button on the Scanner and Post-Breakout pages.
+
+        ---
+
+        ### Troubleshooting
+
+        **Q: The app is loading slowly**
+        A: This can happen during market hours when NSE servers are busy. Try:
+        - Reducing the number of indices selected
+        - Waiting a few minutes and trying again
+        - Checking your internet connection
+
+        **Q: I see an error message**
+        A: Common causes and solutions:
+        - **NSE website down:** Wait and try again
+        - **Too many requests:** Wait 1-2 minutes before retrying
+        - **Network error:** Check your internet connection
+
+        **Q: Navigation menu not working**
+        A: Try refreshing the page (F5 or pull down to refresh on mobile).
+        """)
+
+        # Quick links
+        st.divider()
+        st.markdown("### 📧 Need More Help?")
+        st.markdown("""
+        If you have questions not covered here:
+        - Check our [GitHub Repository](https://github.com/ManojKathare/nse-squeeze-scanner)
+        - Report issues or request features via GitHub Issues
+        """)
+
     st.divider()
 
-    # Quick search
-    search_query = st.text_input("🔍 Search Help Topics", placeholder="Type to search...")
-
-    # Help sections
-    sections = {
-        "Squeeze Momentum": """
-### What is Squeeze Momentum?
-
-The **Squeeze Momentum Indicator** combines Bollinger Bands and Keltner Channels to identify periods of low volatility (squeeze) that often precede significant price moves.
-
-**How it works:**
-- **Squeeze ON** (🟢): Bollinger Bands are INSIDE Keltner Channels - volatility is contracting
-- **Squeeze OFF** (⚪): Bollinger Bands are OUTSIDE Keltner Channels - volatility is expanding
-- **Squeeze FIRED** (🔴): The squeeze has just ended - potential breakout signal
-
-**Trading Strategy:**
-1. Wait for a squeeze to form (green dots)
-2. Watch for the squeeze to "fire" (transition from ON to OFF)
-3. The momentum direction at the time of fire indicates breakout direction
-""",
-        "Bollinger Bands": """
-### Bollinger Bands
-
-Bollinger Bands are volatility bands placed above and below a moving average.
-
-**Components:**
-- **Middle Band**: 20-period Simple Moving Average (SMA)
-- **Upper Band**: Middle Band + (2 × Standard Deviation)
-- **Lower Band**: Middle Band - (2 × Standard Deviation)
-
-**BB Width:**
-- Calculated as: ((Upper - Lower) / Middle) × 100
-- Lower BB Width = tighter squeeze = potential bigger breakout
-- Use the BB Width slider to filter stocks with tighter squeezes
-""",
-        "200 DMA": """
-### 200-Day Moving Average (200 DMA)
-
-The 200 DMA is a long-term trend indicator that helps validate breakout signals.
-
-**Signal Validation Rules:**
-- **Bullish Signals**: Valid only when price is ABOVE the 200 DMA
-- **Bearish Signals**: Valid only when price is BELOW the 200 DMA
-
-**Why this matters:**
-- Trading with the long-term trend increases success probability
-- Signals against the trend have higher risk
-- The "Valid Signals Only" filter applies these rules automatically
-
-**DMA Status Indicators:**
-- ✓ Above: Price is above 200 DMA (bullish long-term)
-- ✗ Below: Price is below 200 DMA (bearish long-term)
-""",
-        "Volume": """
-### Volume Analysis
-
-Volume confirms the strength of price movements.
-
-**Key Points:**
-- High volume on breakout = stronger signal
-- Low volume on breakout = potential false breakout
-- Volume expansion during squeeze fire is ideal
-
-**Volume in Charts:**
-- Green bars: Price closed higher
-- Red bars: Price closed lower
-""",
-        "Momentum Direction": """
-### Momentum Direction
-
-The momentum indicator shows both direction and strength of the current move.
-
-**Four States:**
-- **BULLISH_UP** (📈): Positive momentum, increasing - strongest buy
-- **BULLISH_DOWN** (📈): Positive momentum, decreasing - weakening buy
-- **BEARISH_DOWN** (📉): Negative momentum, decreasing - strongest sell
-- **BEARISH_UP** (📉): Negative momentum, increasing - weakening sell
-
-**Momentum Histogram Colors:**
-- Lime Green: Bullish momentum increasing
-- Dark Green: Bullish momentum decreasing
-- Red: Bearish momentum increasing
-- Dark Red: Bearish momentum decreasing
-""",
-        "Filtering Options": """
-### Using Filters Effectively
-
-**Index Selection:**
-Select multiple indices to scan. The scanner will combine all unique stocks.
-
-**Squeeze Status Filter:**
-- All: Show all stocks
-- Squeeze ON: Only stocks currently in a squeeze
-- Squeeze OFF: Only stocks with no active squeeze
-- Fired Today: Only stocks where squeeze just ended
-
-**Min Duration Filter:**
-Filter for squeezes that have lasted at least X days. Longer squeezes often lead to bigger moves.
-
-**BB Width Filter:**
-Filter stocks with BB Width below a threshold. Tighter squeezes (lower BB Width) often produce larger breakouts.
-
-**Momentum Filter:**
-Select specific momentum directions to focus on bullish or bearish setups.
-""",
-        "Data & Scanning": """
-### Data Management
-
-**Intelligent Caching:**
-- The scanner caches scan results by date
-- Clicking "Scan Now" only fetches new data needed
-- Use "Refresh Data" to force a complete refresh
-
-**Last Scan Info:**
-- Shows when data was last updated
-- Indicates if data is from today or outdated
-
-**Data Periods:**
-- 6 Months: Good for short-term patterns
-- 1-2 Years: Better for trend context
-- 5 Years/Max: Best for comprehensive history and 200 DMA accuracy
-""",
-        "Post-Breakout Analysis": """
-### Understanding Post-Breakout Charts
-
-The Post-Breakout Analysis tab shows historical price movement after squeeze breakouts.
-
-**Time Periods:**
-- 5 Days: Short-term reaction
-- 10 Days: Medium-term follow-through
-- 20 Days: Longer-term trend development
-
-**Box Plot Reading:**
-- Box shows interquartile range (25th-75th percentile)
-- Line in box is median
-- Whiskers show data range
-- Diamond shows mean
-
-**Interpreting Results:**
-- Consistent positive moves = reliable bullish breakouts
-- High variance = less predictable outcomes
-- Compare bullish vs bearish to understand stock's typical behavior
-""",
-        "Watchlist & Alerts": """
-### Using Watchlist & Alerts
-
-**Watchlist:**
-- Save stocks you're monitoring
-- Quick access to real-time squeeze status
-- Add notes, target prices, and stop losses
-
-**Alerts:**
-- Price Above: Triggered when price exceeds threshold
-- Price Below: Triggered when price falls below threshold
-- Squeeze Fire: Triggered when a squeeze ends
-
-**Tips:**
-- Add stocks in squeeze to watchlist for monitoring
-- Set alerts for key price levels
-- Review watchlist regularly for new opportunities
-"""
-    }
-
-    # Filter sections based on search
-    if search_query:
-        filtered_sections = {k: v for k, v in sections.items() if search_query.lower() in k.lower() or search_query.lower() in v.lower()}
-    else:
-        filtered_sections = sections
-
-    # Display sections
-    for title, content in filtered_sections.items():
-        with st.expander(f"📖 {title}", expanded=not search_query):
-            st.markdown(content)
-
-    st.divider()
-
-    # Quick reference
+    # Quick Reference Section
     st.subheader("📌 Quick Reference")
 
     col1, col2 = st.columns(2)
 
     with col1:
         st.markdown("""
-**Status Icons:**
-- 🟢 Squeeze ON
-- ⚪ Squeeze OFF
-- 🔴 Squeeze FIRED
-- 📈 Bullish momentum
-- 📉 Bearish momentum
-- ⭐ In watchlist
-- ✓ Valid signal
-- ⚠️ Caution (against trend)
+        **Status Icons:**
+        - 🟢 Squeeze ON (consolidation)
+        - ⚪ Squeeze OFF (normal)
+        - 🔴 Squeeze FIRED (breakout!)
+        - 📈 Bullish momentum
+        - 📉 Bearish momentum
+        - ⭐ In watchlist
+        - ✅ Valid signal
+        - ⚠️ Invalid (against trend)
         """)
 
     with col2:
         st.markdown("""
-**Keyboard Shortcuts:**
-- Use Tab to navigate
-- Enter to select
-- Esc to cancel
-
-**Best Practices:**
-1. Use 5Y data for accurate 200 DMA
-2. Focus on valid signals
-3. Monitor BB Width for tight squeezes
-4. Check volume on breakout
+        **Best Practices:**
+        1. Use 5Y data for accurate 200 DMA
+        2. Focus on valid signals only
+        3. Look for tight squeezes (low BB Width)
+        4. Confirm breakouts with volume
+        5. Always use stop losses
+        6. Track performance via Post-Breakout
         """)
+
+    # Navigation quick links
+    st.divider()
+    st.markdown("### 🔗 Quick Navigation")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if st.button("🔍 Go to Scanner", use_container_width=True):
+            st.session_state.current_page = "Scanner"
+            st.rerun()
+
+    with col2:
+        if st.button("📈 Post-Breakout", use_container_width=True):
+            st.session_state.current_page = "Post-Breakout"
+            st.rerun()
+
+    with col3:
+        if st.button("⭐ Watchlist", use_container_width=True):
+            st.session_state.current_page = "Watchlist"
+            st.rerun()
 
 
 def main():
@@ -2364,9 +3394,9 @@ def main():
     # This is the ONLY place where filter session state can be safely modified
     apply_pending_preset_if_needed()
 
-    # Page mapping
-    page_options = ["🔍 Scanner", "📊 Stock Detail", "⭐ Watchlist", "🔔 Alerts", "ℹ️ Help"]
-    page_names = ["Scanner", "Stock Detail", "Watchlist", "Alerts", "Help"]
+    # Page mapping - includes Post-Breakout page
+    page_options = ["🔍 Scanner", "📊 Stock Detail", "📈 Post-Breakout", "⭐ Watchlist", "🔔 Alerts", "ℹ️ Help"]
+    page_names = ["Scanner", "Stock Detail", "Post-Breakout", "Watchlist", "Alerts", "Help"]
     page_map = dict(zip(page_options, page_names))
     reverse_page_map = dict(zip(page_names, page_options))
 
@@ -2428,6 +3458,8 @@ def main():
         render_scanner()
     elif st.session_state.current_page == "Stock Detail":
         render_stock_detail()
+    elif st.session_state.current_page == "Post-Breakout":
+        render_post_breakout()
     elif st.session_state.current_page == "Watchlist":
         render_watchlist()
     elif st.session_state.current_page == "Alerts":
