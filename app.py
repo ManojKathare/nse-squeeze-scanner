@@ -43,9 +43,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for beautiful dark theme with improved contrast
+# Custom CSS for beautiful dark theme with enhanced text visibility and contrast
 st.markdown("""
 <style>
+    /* ===== BACKGROUND COLORS ===== */
     .stApp {
         background-color: #0E1117;
     }
@@ -55,15 +56,37 @@ st.markdown("""
     [data-testid="stSidebar"] > div:first-child {
         background-color: #1A1D24;
     }
-    /* Improved sidebar text contrast */
+
+    /* ===== ENHANCED TEXT VISIBILITY ===== */
+    /* Main content text - High contrast for readability */
+    body, .stApp, p, span, div, label {
+        color: #E8EAED !important;
+    }
+
+    /* Headers - Maximum contrast */
+    h1, h2, h3, h4, h5, h6 {
+        color: #FFFFFF !important;
+        font-weight: 600;
+    }
+
+    /* Subheaders */
+    .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
+        color: #F0F0F0 !important;
+    }
+
+    /* ===== SIDEBAR TEXT - ENHANCED VISIBILITY ===== */
     [data-testid="stSidebar"] .stMarkdown p,
     [data-testid="stSidebar"] .stMarkdown li,
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] .stRadio label,
-    [data-testid="stSidebar"] .stCheckbox label {
-        color: #E8EAED !important;
-        font-weight: 400;
+    [data-testid="stSidebar"] .stCheckbox label,
+    [data-testid="stSidebar"] .stSelectbox label,
+    [data-testid="stSidebar"] .stMultiSelect label,
+    [data-testid="stSidebar"] .stSlider label {
+        color: #F0F0F0 !important;
+        font-weight: 500;
     }
+
     [data-testid="stSidebar"] h1,
     [data-testid="stSidebar"] h2,
     [data-testid="stSidebar"] h3,
@@ -71,85 +94,254 @@ st.markdown("""
     [data-testid="stSidebar"] .stMarkdown h2,
     [data-testid="stSidebar"] .stMarkdown h3 {
         color: #FFFFFF !important;
-        font-weight: 600;
+        font-weight: 700;
     }
-    /* Main content text */
-    h1, h2, h3 {
-        color: #FAFAFA !important;
+
+    /* Sidebar text elements */
+    [data-testid="stSidebar"] .stMarkdown {
+        color: #E8EAED !important;
     }
+
+    /* ===== METRICS - HIGH VISIBILITY ===== */
     [data-testid="stMetricValue"] {
         font-size: 1.8rem !important;
-        color: #FAFAFA !important;
+        color: #FFFFFF !important;
+        font-weight: 600;
     }
     [data-testid="stMetricLabel"] {
-        color: #B8BCC4 !important;
-    }
-    /* Improved button styling */
-    .stButton > button {
-        background-color: #1E90FF;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 0.5rem 1rem;
+        color: #D1D5DB !important;
         font-weight: 500;
+        font-size: 0.95rem !important;
     }
-    .stButton > button:hover {
-        background-color: #4169E1;
-    }
-    /* Secondary button styling */
-    .stButton > button[kind="secondary"] {
-        background-color: #2D3748;
-        border: 1px solid #4A5568;
-    }
+
+    /* ===== DATAFRAMES & TABLES - ENHANCED READABILITY ===== */
     [data-testid="stDataFrame"] {
         background-color: #1E1E2E;
         border-radius: 10px;
     }
+
+    /* DataFrame text */
+    .dataframe {
+        color: #E8EAED !important;
+    }
+
+    /* Table headers */
+    .dataframe th {
+        background-color: #2D3748 !important;
+        color: #FFFFFF !important;
+        font-weight: 600;
+        border-bottom: 2px solid #4A5568 !important;
+    }
+
+    /* Table cells */
+    .dataframe td {
+        color: #E8EAED !important;
+        border-bottom: 1px solid #374151 !important;
+    }
+
+    /* ===== BUTTONS - IMPROVED CONTRAST ===== */
+    .stButton > button {
+        background-color: #1E90FF;
+        color: #FFFFFF !important;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+    }
+    .stButton > button:hover {
+        background-color: #4169E1;
+        color: #FFFFFF !important;
+    }
+
+    /* Secondary buttons */
+    .stButton > button[kind="secondary"] {
+        background-color: #2D3748;
+        color: #E8EAED !important;
+        border: 1px solid #4A5568;
+    }
+    .stButton > button[kind="secondary"]:hover {
+        background-color: #374151;
+        color: #FFFFFF !important;
+    }
+
+    /* ===== INPUT FIELDS - ENHANCED VISIBILITY ===== */
+    input, textarea, select {
+        color: #E8EAED !important;
+        background-color: #1E2530 !important;
+        border: 1px solid #4A5568 !important;
+    }
+
+    input::placeholder {
+        color: #9CA3AF !important;
+    }
+
+    /* ===== TABS - BETTER READABILITY ===== */
     .stTabs [data-baseweb="tab"] {
         background-color: #262730;
         border-radius: 8px;
         padding: 8px 16px;
-        color: #E8EAED;
+        color: #E8EAED !important;
+        font-weight: 500;
     }
     .stTabs [aria-selected="true"] {
         background-color: #1E90FF !important;
-        color: white !important;
+        color: #FFFFFF !important;
+        font-weight: 600;
     }
-    hr {
-        border-color: #3E3E4E;
+
+    /* ===== EXPANDERS - IMPROVED TEXT VISIBILITY ===== */
+    .streamlit-expanderHeader {
+        color: #FFFFFF !important;
+        font-weight: 600;
+        background-color: #1E2530 !important;
     }
-    /* Checkbox styling for better visibility */
-    [data-testid="stSidebar"] .stCheckbox {
-        padding: 4px 0;
+
+    .streamlit-expanderContent {
+        color: #E8EAED !important;
+        background-color: #181B23 !important;
     }
-    /* Slider styling */
-    .stSlider > div > div > div {
-        color: #E8EAED;
-    }
-    /* Caption styling */
-    .stCaption {
-        color: #9CA3AF !important;
-    }
-    /* Info box styling */
+
+    /* ===== INFO/WARNING/ERROR BOXES - HIGH CONTRAST ===== */
     .stAlert {
         background-color: #1E2530;
         border-radius: 8px;
+        color: #E8EAED !important;
     }
-    /* Status badges */
+
+    /* Info boxes */
+    [data-baseweb="notification"] {
+        color: #E8EAED !important;
+    }
+
+    /* Success messages */
+    .stSuccess {
+        background-color: rgba(0, 210, 106, 0.2) !important;
+        color: #00D26A !important;
+    }
+
+    /* Warning messages */
+    .stWarning {
+        background-color: rgba(255, 193, 7, 0.2) !important;
+        color: #FFC107 !important;
+    }
+
+    /* Error messages */
+    .stError {
+        background-color: rgba(255, 75, 75, 0.2) !important;
+        color: #FF4B4B !important;
+    }
+
+    /* ===== CHECKBOX & RADIO - ENHANCED VISIBILITY ===== */
+    [data-testid="stSidebar"] .stCheckbox {
+        padding: 4px 0;
+    }
+
+    .stCheckbox label, .stRadio label {
+        color: #E8EAED !important;
+        font-weight: 500;
+    }
+
+    /* ===== SLIDER - BETTER CONTRAST ===== */
+    .stSlider > div > div > div {
+        color: #E8EAED !important;
+    }
+
+    .stSlider label {
+        color: #E8EAED !important;
+        font-weight: 500;
+    }
+
+    /* ===== SELECTBOX & MULTISELECT - IMPROVED READABILITY ===== */
+    .stSelectbox label, .stMultiSelect label {
+        color: #E8EAED !important;
+        font-weight: 500;
+    }
+
+    /* Dropdown options */
+    [data-baseweb="select"] {
+        color: #E8EAED !important;
+    }
+
+    /* ===== CAPTIONS & HELP TEXT ===== */
+    .stCaption {
+        color: #9CA3AF !important;
+    }
+
+    small, .small-text {
+        color: #B8BCC4 !important;
+    }
+
+    /* ===== DIVIDERS ===== */
+    hr {
+        border-color: #3E3E4E;
+    }
+
+    /* ===== STATUS BADGES ===== */
     .status-valid {
         background-color: rgba(0, 210, 106, 0.2);
         color: #00D26A;
         padding: 2px 8px;
         border-radius: 4px;
-        font-weight: 500;
+        font-weight: 600;
     }
     .status-invalid {
         background-color: rgba(255, 75, 75, 0.2);
         color: #FF4B4B;
         padding: 2px 8px;
         border-radius: 4px;
+        font-weight: 600;
+    }
+
+    /* ===== CHART LABELS - MAXIMUM VISIBILITY ===== */
+    .plotly .gtitle, .plotly .xtitle, .plotly .ytitle {
+        fill: #FFFFFF !important;
+    }
+
+    .js-plotly-plot .plotly text {
+        fill: #E8EAED !important;
+    }
+
+    /* ===== MARKDOWN CONTENT ===== */
+    .stMarkdown p, .stMarkdown li {
+        color: #E8EAED !important;
+    }
+
+    .stMarkdown strong, .stMarkdown b {
+        color: #FFFFFF !important;
+        font-weight: 700;
+    }
+
+    .stMarkdown code {
+        background-color: #1E2530 !important;
+        color: #00D26A !important;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    /* ===== FORMS - ENHANCED VISIBILITY ===== */
+    [data-testid="stForm"] {
+        background-color: #1A1D24;
+        border: 1px solid #374151;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+
+    [data-testid="stForm"] label {
+        color: #E8EAED !important;
         font-weight: 500;
     }
+
+    /* ===== SPINNER TEXT ===== */
+    .stSpinner > div {
+        color: #E8EAED !important;
+    }
+
+    /* ===== PROGRESS BAR TEXT ===== */
+    .stProgress > div > div > div > div {
+        color: #E8EAED !important;
+    }
+
+    /* ===== REMOVE STREAMLIT BRANDING ===== */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
 </style>
@@ -2356,6 +2548,274 @@ The Post-Breakout Analysis tab shows historical price movement after squeeze bre
         """)
 
 
+def render_post_breakout_analysis():
+    """
+    Post-Breakout Analysis Page
+    Shows detailed analysis of breakout stocks with CSV export capability
+    """
+    st.title("📊 Post-Breakout Analysis")
+    st.caption("Analyze breakout patterns and export detailed reports")
+    st.markdown("---")
+
+    # Check if scan results exist
+    if 'scan_results' not in st.session_state or st.session_state.scan_results is None:
+        st.warning("⚠️ No scan results available. Please run a scan first.")
+        if st.button("Go to Scanner", type="primary"):
+            st.session_state.current_page = "Scanner"
+            st.rerun()
+        return
+
+    scan_results = st.session_state.scan_results
+
+    # Filter for stocks with entry signals
+    if 'entry_signal' in scan_results.columns:
+        breakouts = scan_results[scan_results['entry_signal'] == True].copy()
+    else:
+        breakouts = scan_results[scan_results['Squeeze_Fire'] == True].copy()
+
+    if breakouts.empty:
+        st.info("📭 No breakouts found in the current scan results.")
+        st.caption("Run a new scan or wait for squeeze patterns to fire.")
+        if st.button("Go to Scanner", type="primary"):
+            st.session_state.current_page = "Scanner"
+            st.rerun()
+        return
+
+    st.success(f"✅ Found **{len(breakouts)}** breakout signals in scanned stocks")
+
+    # Summary metrics
+    st.markdown("### 📈 Summary Statistics")
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric("Total Breakouts", len(breakouts))
+
+    with col2:
+        if 'signal_type' in breakouts.columns:
+            bullish_count = breakouts['signal_type'].str.contains('Bullish', na=False).sum()
+        else:
+            bullish_count = (breakouts['Squeeze_Momentum'] > 0).sum()
+        st.metric("Bullish Signals", bullish_count)
+
+    with col3:
+        if 'signal_type' in breakouts.columns:
+            bearish_count = breakouts['signal_type'].str.contains('Bearish', na=False).sum()
+        else:
+            bearish_count = (breakouts['Squeeze_Momentum'] < 0).sum()
+        st.metric("Bearish Signals", bearish_count)
+
+    with col4:
+        if 'signal_valid' in breakouts.columns:
+            valid_count = (breakouts['signal_valid'] == True).sum()
+            valid_pct = (valid_count / len(breakouts)) * 100
+            st.metric("Valid Signals", f"{valid_pct:.1f}%")
+        else:
+            st.metric("Valid Signals", "N/A")
+
+    st.markdown("---")
+
+    # Prepare analysis dataframe
+    analysis_data = []
+
+    for idx, row in breakouts.iterrows():
+        symbol = row.get('Symbol', '')
+        company = row.get('Company', symbol)
+
+        # Determine signal type
+        if 'signal_type' in row and pd.notna(row['signal_type']):
+            signal_type = row['signal_type']
+        elif 'Squeeze_Momentum' in row:
+            if row['Squeeze_Momentum'] > 0:
+                signal_type = 'Bullish'
+            else:
+                signal_type = 'Bearish'
+        else:
+            signal_type = 'Unknown'
+
+        # Build record
+        record = {
+            'Symbol': symbol,
+            'Company': company,
+            'Signal Type': signal_type,
+            'Current Price': f"₹{row.get('Close', 0):.2f}",
+            'Squeeze Duration': int(row.get('Squeeze_Duration', 0)),
+            'BB Width %': f"{row.get('BB_Width', 0):.2f}",
+            'Momentum': f"{row.get('Squeeze_Momentum', 0):.2f}",
+            '200 DMA': f"₹{row.get('DMA_200', 0):.2f}" if 'DMA_200' in row and pd.notna(row.get('DMA_200')) else 'N/A',
+            'Valid Signal': '✅' if row.get('signal_valid', False) else '⚠️',
+            'Volume': f"{row.get('Volume', 0):,.0f}",
+        }
+
+        # Add distance from 200 DMA if available
+        if 'DMA_200' in row and pd.notna(row.get('DMA_200')) and row.get('DMA_200') > 0:
+            dist_pct = ((row.get('Close', 0) - row.get('DMA_200', 0)) / row.get('DMA_200', 0)) * 100
+            record['Distance from 200 DMA'] = f"{dist_pct:+.2f}%"
+
+        analysis_data.append(record)
+
+    analysis_df = pd.DataFrame(analysis_data)
+
+    # Create tabs for different views
+    tab1, tab2, tab3 = st.tabs(["📊 All Breakouts", "📈 Bullish Only", "📉 Bearish Only"])
+
+    with tab1:
+        st.markdown("### All Breakout Signals")
+        st.dataframe(analysis_df, use_container_width=True, hide_index=True)
+
+        # CSV Download
+        csv_all = analysis_df.to_csv(index=False)
+        st.download_button(
+            label="📥 Download All Breakouts (CSV)",
+            data=csv_all,
+            file_name=f"all_breakouts_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+            mime="text/csv",
+            use_container_width=True,
+            type="primary"
+        )
+
+    with tab2:
+        bullish_df = analysis_df[analysis_df['Signal Type'].str.contains('Bullish', na=False)]
+
+        if not bullish_df.empty:
+            st.markdown("### Bullish Breakout Signals")
+
+            # Metrics for bullish
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Count", len(bullish_df))
+            with col2:
+                valid_bullish = bullish_df[bullish_df['Valid Signal'] == '✅']
+                valid_pct = (len(valid_bullish) / len(bullish_df)) * 100 if len(bullish_df) > 0 else 0
+                st.metric("Valid %", f"{valid_pct:.1f}%")
+            with col3:
+                avg_duration = breakouts[breakouts['Squeeze_Momentum'] > 0]['Squeeze_Duration'].mean()
+                st.metric("Avg Duration", f"{avg_duration:.1f} days")
+
+            st.dataframe(bullish_df, use_container_width=True, hide_index=True)
+
+            csv_bullish = bullish_df.to_csv(index=False)
+            st.download_button(
+                label="📥 Download Bullish Breakouts (CSV)",
+                data=csv_bullish,
+                file_name=f"bullish_breakouts_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                mime="text/csv",
+                use_container_width=True,
+                type="primary"
+            )
+        else:
+            st.info("No bullish breakouts found")
+
+    with tab3:
+        bearish_df = analysis_df[analysis_df['Signal Type'].str.contains('Bearish', na=False)]
+
+        if not bearish_df.empty:
+            st.markdown("### Bearish Breakout Signals")
+
+            # Metrics for bearish
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Count", len(bearish_df))
+            with col2:
+                valid_bearish = bearish_df[bearish_df['Valid Signal'] == '✅']
+                valid_pct = (len(valid_bearish) / len(bearish_df)) * 100 if len(bearish_df) > 0 else 0
+                st.metric("Valid %", f"{valid_pct:.1f}%")
+            with col3:
+                avg_duration = breakouts[breakouts['Squeeze_Momentum'] < 0]['Squeeze_Duration'].mean()
+                st.metric("Avg Duration", f"{avg_duration:.1f} days")
+
+            st.dataframe(bearish_df, use_container_width=True, hide_index=True)
+
+            csv_bearish = bearish_df.to_csv(index=False)
+            st.download_button(
+                label="📥 Download Bearish Breakouts (CSV)",
+                data=csv_bearish,
+                file_name=f"bearish_breakouts_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                mime="text/csv",
+                use_container_width=True,
+                type="primary"
+            )
+        else:
+            st.info("No bearish breakouts found")
+
+    # Distribution charts
+    st.markdown("---")
+    st.markdown("### 📊 Breakout Distribution Analysis")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        # Signal type distribution
+        signal_counts = analysis_df['Signal Type'].value_counts()
+        fig1 = go.Figure(data=[go.Pie(
+            labels=signal_counts.index,
+            values=signal_counts.values,
+            hole=0.4,
+            marker=dict(colors=['#00D26A', '#FF4B4B'])
+        )])
+        fig1.update_layout(
+            title="Signal Type Distribution",
+            height=300,
+            margin=dict(l=20, r=20, t=40, b=20)
+        )
+        st.plotly_chart(fig1, use_container_width=True)
+
+    with col2:
+        # Valid vs Invalid signals
+        valid_counts = analysis_df['Valid Signal'].value_counts()
+        fig2 = go.Figure(data=[go.Pie(
+            labels=valid_counts.index,
+            values=valid_counts.values,
+            hole=0.4,
+            marker=dict(colors=['#00D26A', '#FFC107'])
+        )])
+        fig2.update_layout(
+            title="Signal Validation",
+            height=300,
+            margin=dict(l=20, r=20, t=40, b=20)
+        )
+        st.plotly_chart(fig2, use_container_width=True)
+
+    # Squeeze duration distribution
+    st.markdown("#### Squeeze Duration Distribution")
+    if 'Squeeze_Duration' in breakouts.columns:
+        fig3 = go.Figure(data=[go.Histogram(
+            x=breakouts['Squeeze_Duration'],
+            nbinsx=20,
+            marker=dict(color='#1E90FF')
+        )])
+        fig3.update_layout(
+            xaxis_title="Squeeze Duration (days)",
+            yaxis_title="Frequency",
+            height=300,
+            margin=dict(l=20, r=20, t=20, b=20)
+        )
+        st.plotly_chart(fig3, use_container_width=True)
+
+    # Tips section
+    st.markdown("---")
+    st.markdown("### 💡 Analysis Tips")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.info("""
+**Using This Analysis:**
+- Focus on valid signals (✅) for higher probability setups
+- Longer squeeze durations often lead to bigger moves
+- Check 200 DMA alignment for trend confirmation
+- Monitor BB Width - tighter squeezes = potential larger breakouts
+        """)
+
+    with col2:
+        st.warning("""
+**Important Notes:**
+- Past breakouts don't guarantee future performance
+- Always use proper risk management
+- Combine with other technical analysis
+- Check volume confirmation on breakout candles
+        """)
+
+
 def main():
     """Main application"""
     init_session_state()
@@ -2365,8 +2825,8 @@ def main():
     apply_pending_preset_if_needed()
 
     # Page mapping
-    page_options = ["🔍 Scanner", "📊 Stock Detail", "⭐ Watchlist", "🔔 Alerts", "ℹ️ Help"]
-    page_names = ["Scanner", "Stock Detail", "Watchlist", "Alerts", "Help"]
+    page_options = ["🔍 Scanner", "📊 Stock Detail", "📈 Post-Breakout", "⭐ Watchlist", "🔔 Alerts", "ℹ️ Help"]
+    page_names = ["Scanner", "Stock Detail", "Post-Breakout", "Watchlist", "Alerts", "Help"]
     page_map = dict(zip(page_options, page_names))
     reverse_page_map = dict(zip(page_names, page_options))
 
@@ -2428,6 +2888,8 @@ def main():
         render_scanner()
     elif st.session_state.current_page == "Stock Detail":
         render_stock_detail()
+    elif st.session_state.current_page == "Post-Breakout":
+        render_post_breakout_analysis()
     elif st.session_state.current_page == "Watchlist":
         render_watchlist()
     elif st.session_state.current_page == "Alerts":
