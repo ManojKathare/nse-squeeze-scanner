@@ -40,7 +40,12 @@ st.set_page_config(
     page_title="NSE Squeeze Scanner",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed",  # Start collapsed for better mobile UX
+    menu_items={
+        'Get Help': 'https://github.com/ManojKathare/nse-squeeze-scanner',
+        'Report a bug': 'https://github.com/ManojKathare/nse-squeeze-scanner/issues',
+        'About': '# NSE Squeeze Scanner\nTTM Squeeze Strategy Scanner for Indian Stocks'
+    }
 )
 
 # ========== MOBILE-RESPONSIVE CSS STYLING ==========
@@ -600,15 +605,175 @@ apply_mobile_responsive_styling()
 
 
 # ========== MOBILE HELPER FUNCTIONS ==========
-def add_mobile_navigation_hint():
-    """Add a helpful navigation hint for mobile users"""
+def add_mobile_hamburger_menu():
+    """Add hamburger menu toggle for mobile devices"""
     st.markdown("""
-    <div class="mobile-only">
-        <div class="mobile-tip-box">
-            <p>📱 <strong>Mobile Tip:</strong> Tap ☰ in the top-left to access navigation menu</p>
-        </div>
-    </div>
+    <style>
+        /* Mobile hamburger menu button */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 0.75rem;
+            left: 0.75rem;
+            z-index: 1001;
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(30, 144, 255, 0.4);
+            width: 48px;
+            height: 48px;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .mobile-menu-toggle:hover {
+            background-color: #4169E1;
+            transform: scale(1.05);
+        }
+
+        .mobile-menu-toggle:active {
+            transform: scale(0.95);
+        }
+
+        /* Show only on mobile */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex !important;
+            }
+
+            /* Add padding to main content to avoid overlap with hamburger */
+            .main .block-container {
+                padding-top: 4rem !important;
+            }
+
+            /* Style sidebar for mobile slide-in */
+            [data-testid="stSidebar"] {
+                transition: transform 0.3s ease !important;
+            }
+
+            [data-testid="stSidebar"][aria-expanded="false"] {
+                transform: translateX(-100%) !important;
+            }
+
+            [data-testid="stSidebar"][aria-expanded="true"] {
+                transform: translateX(0) !important;
+                box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3) !important;
+            }
+        }
+
+        /* Hide hamburger on desktop */
+        @media (min-width: 769px) {
+            .mobile-menu-toggle {
+                display: none !important;
+            }
+        }
+    </style>
+
+    <script>
+        // Wait for DOM to be ready
+        function initHamburgerMenu() {
+            // Check if hamburger already exists
+            if (document.querySelector('.mobile-menu-toggle')) return;
+
+            // Create hamburger button
+            const hamburger = document.createElement('button');
+            hamburger.className = 'mobile-menu-toggle';
+            hamburger.innerHTML = '☰';
+            hamburger.setAttribute('aria-label', 'Toggle navigation menu');
+            hamburger.setAttribute('id', 'mobile-hamburger');
+            document.body.appendChild(hamburger);
+
+            // Toggle sidebar function
+            hamburger.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const sidebar = document.querySelector('[data-testid="stSidebar"]');
+                const collapseBtn = document.querySelector('[data-testid="stSidebar"] button[kind="header"]');
+
+                if (sidebar) {
+                    const isExpanded = sidebar.getAttribute('aria-expanded') === 'true';
+
+                    if (isExpanded) {
+                        // Close sidebar
+                        if (collapseBtn) collapseBtn.click();
+                        hamburger.innerHTML = '☰';
+                    } else {
+                        // Open sidebar
+                        if (collapseBtn) collapseBtn.click();
+                        hamburger.innerHTML = '✕';
+                    }
+                }
+            });
+
+            // Update hamburger icon based on sidebar state
+            const observer = new MutationObserver(function(mutations) {
+                const sidebar = document.querySelector('[data-testid="stSidebar"]');
+                if (sidebar) {
+                    const isExpanded = sidebar.getAttribute('aria-expanded') === 'true';
+                    hamburger.innerHTML = isExpanded ? '✕' : '☰';
+                }
+            });
+
+            const sidebar = document.querySelector('[data-testid="stSidebar"]');
+            if (sidebar) {
+                observer.observe(sidebar, { attributes: true, attributeFilter: ['aria-expanded'] });
+            }
+        }
+
+        // Initialize on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHamburgerMenu);
+        } else {
+            initHamburgerMenu();
+        }
+
+        // Re-initialize after Streamlit reruns
+        window.addEventListener('load', function() {
+            setTimeout(initHamburgerMenu, 100);
+        });
+    </script>
     """, unsafe_allow_html=True)
+
+
+def add_mobile_navigation_hint():
+    """Add a helpful navigation hint for mobile users - shown only once"""
+    # Check if hint was already shown in this session
+    if 'mobile_hint_shown' not in st.session_state:
+        st.markdown("""
+        <div class="mobile-only">
+            <div class="mobile-tip-box">
+                <p>📱 <strong>Tip:</strong> Tap the ☰ button in the top-left corner to navigate between pages</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.session_state.mobile_hint_shown = True
+
+
+def add_mobile_page_header(page_title, show_hint=True):
+    """Add mobile-friendly page header with optional navigation hint"""
+    # Show navigation hint only on first visit
+    if show_hint and 'shown_mobile_hint' not in st.session_state:
+        st.markdown("""
+        <div class="mobile-only">
+            <div style="background-color: rgba(30, 144, 255, 0.15);
+                        border-left: 4px solid #1E90FF;
+                        padding: 12px 16px;
+                        border-radius: 0 8px 8px 0;
+                        margin-bottom: 16px;">
+                <p style="margin: 0; color: #E8EAED; font-size: 14px;">
+                    💡 <strong>Tip:</strong> Use the ☰ button to navigate between pages
+                </p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.session_state.shown_mobile_hint = True
 
 
 def add_back_to_top_button():
@@ -1305,8 +1470,11 @@ def render_scanner():
     st.title("🔍 NSE Squeeze Scanner")
     st.caption("Scan Indian stocks for Bollinger Bands squeeze patterns with 200 DMA validation")
 
-    # Mobile navigation hint
-    add_mobile_navigation_hint()
+    # Add hamburger menu for mobile
+    add_mobile_hamburger_menu()
+
+    # Mobile navigation hint (shows only once per session)
+    add_mobile_page_header("🔍 Stock Scanner")
 
     # Add back to top button for long pages
     add_back_to_top_button()
@@ -3394,43 +3562,48 @@ def main():
     # This is the ONLY place where filter session state can be safely modified
     apply_pending_preset_if_needed()
 
-    # Page mapping - includes Post-Breakout page
-    page_options = ["🔍 Scanner", "📊 Stock Detail", "📈 Post-Breakout", "⭐ Watchlist", "🔔 Alerts", "ℹ️ Help"]
-    page_names = ["Scanner", "Stock Detail", "Post-Breakout", "Watchlist", "Alerts", "Help"]
-    page_map = dict(zip(page_options, page_names))
-    reverse_page_map = dict(zip(page_names, page_options))
+    # Page configuration for navigation
+    pages = [
+        {"icon": "🔍", "name": "Scanner", "key": "Scanner"},
+        {"icon": "📊", "name": "Stock Detail", "key": "Stock Detail"},
+        {"icon": "📈", "name": "Post-Breakout", "key": "Post-Breakout", "badge": "NEW"},
+        {"icon": "⭐", "name": "Watchlist", "key": "Watchlist"},
+        {"icon": "🔔", "name": "Alerts", "key": "Alerts"},
+        {"icon": "ℹ️", "name": "Help", "key": "Help"}
+    ]
 
-    # Sidebar navigation
+    # Ensure current_page is valid
+    valid_keys = [p["key"] for p in pages]
+    if st.session_state.current_page not in valid_keys:
+        st.session_state.current_page = "Scanner"
+
+    # Sidebar navigation with button-based menu (better for mobile)
     with st.sidebar:
         st.markdown("## 📊 NSE Squeeze Scanner")
         st.caption("Bollinger Bands Squeeze Detector")
         st.divider()
 
-        # Get the current page index for radio button
-        current_page_name = st.session_state.current_page
-        if current_page_name not in page_names:
-            current_page_name = "Scanner"
-        current_index = page_names.index(current_page_name)
+        # Navigation label
+        st.markdown("**📱 Navigation**")
 
-        # Use a key to properly track radio state
-        # Initialize nav_radio state if needed
-        if 'nav_radio' not in st.session_state:
-            st.session_state.nav_radio = page_options[current_index]
+        # Button-based navigation (more clickable on mobile than radio)
+        for page in pages:
+            is_active = st.session_state.current_page == page["key"]
 
-        # Sync nav_radio with current_page when navigating programmatically
-        expected_radio = reverse_page_map.get(st.session_state.current_page, "🔍 Scanner")
-        if st.session_state.nav_radio != expected_radio:
-            st.session_state.nav_radio = expected_radio
+            # Create button label with badge if applicable
+            label = f"{page['icon']} {page['name']}"
+            if page.get('badge'):
+                label += f" 🆕"
 
-        page = st.radio(
-            "Navigation",
-            page_options,
-            key="nav_radio",
-            label_visibility="collapsed"
-        )
-
-        # Update current page from radio selection
-        st.session_state.current_page = page_map.get(page, "Scanner")
+            # Use primary type for active page, secondary for others
+            if st.button(
+                label,
+                key=f"nav_btn_{page['key']}",
+                use_container_width=True,
+                type="primary" if is_active else "secondary"
+            ):
+                st.session_state.current_page = page["key"]
+                st.rerun()
 
         st.divider()
 
@@ -3451,9 +3624,23 @@ def main():
         """)
 
         st.divider()
-        st.caption("Made with ❤️ for Indian Traders")
 
-    # Render page
+        # Quick actions for mobile
+        st.markdown("### ⚡ Quick Actions")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🔄", key="refresh_btn", help="Refresh page"):
+                st.rerun()
+        with col2:
+            if st.button("🏠", key="home_btn", help="Go to Scanner"):
+                st.session_state.current_page = "Scanner"
+                st.rerun()
+
+        st.divider()
+        st.caption("Made with ❤️ for Indian Traders")
+        st.caption(f"v2.1 • {datetime.now().strftime('%b %Y')}")
+
+    # Render page based on current selection
     if st.session_state.current_page == "Scanner":
         render_scanner()
     elif st.session_state.current_page == "Stock Detail":
@@ -3466,6 +3653,9 @@ def main():
         render_alerts()
     elif st.session_state.current_page == "Help":
         render_help()
+    else:
+        # Default to scanner
+        render_scanner()
 
 
 if __name__ == "__main__":
