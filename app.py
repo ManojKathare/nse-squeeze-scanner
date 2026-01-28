@@ -1580,7 +1580,7 @@ def render_scanner():
         data_period = st.selectbox(
             "Historical Data",
             list(PERIOD_OPTIONS.keys()),
-            index=3,  # Default to 5 Years
+            index=0,  # Default to 6 Months
             help="Amount of historical data to analyze"
         )
 
@@ -2880,6 +2880,103 @@ def render_alerts():
             st.divider()
 
 
+def generate_all_stocks_post_breakout_data(symbols: list, period: str = "6mo", progress_callback=None) -> pd.DataFrame:
+    """
+    Generate post-breakout historical data for all scanned stocks.
+
+    This creates a comprehensive CSV with historical squeeze events and their
+    performance metrics (5d, 10d, 20d moves) for ALL stocks, not just fired ones.
+
+    Args:
+        symbols: List of stock symbols to analyze
+        period: Historical data period
+        progress_callback: Optional callback for progress updates
+
+    Returns:
+        DataFrame with all historical breakout data
+    """
+    from core.squeeze_detector import get_squeeze_history, detect_squeeze
+
+    all_events = []
+
+    for i, symbol in enumerate(symbols):
+        if progress_callback:
+            progress_callback(i + 1, len(symbols), symbol)
+
+        try:
+            # Fetch stock data
+            df = fetch_stock_data(symbol, period=period)
+
+            if df is None or df.empty:
+                continue
+
+            # Detect squeeze and get history
+            df = detect_squeeze(df)
+            events = get_squeeze_history(df)
+
+            # Add symbol to each event and append to all_events
+            for event in events:
+                event['symbol'] = symbol
+                # Get current stock info from scan results if available
+                if 'scan_results' in st.session_state and not st.session_state.scan_results.empty:
+                    stock_info = st.session_state.scan_results[
+                        st.session_state.scan_results['symbol'] == symbol
+                    ]
+                    if not stock_info.empty:
+                        event['current_squeeze_status'] = stock_info.iloc[0].get('squeeze_status', 'Unknown')
+                        event['current_price'] = stock_info.iloc[0].get('current_price', 0)
+                all_events.append(event)
+
+        except Exception as e:
+            # Skip stocks that fail to load
+            continue
+
+    if not all_events:
+        return pd.DataFrame()
+
+    # Create DataFrame
+    events_df = pd.DataFrame(all_events)
+
+    # Reorder columns for better readability
+    preferred_order = [
+        'symbol', 'direction', 'start_date', 'end_date', 'duration',
+        'bb_width_before_breakout', 'min_bb_width',
+        'move_5d', 'move_10d', 'move_20d',
+        'price_at_breakout', 'breakout_close',
+        'current_squeeze_status', 'current_price'
+    ]
+
+    # Only include columns that exist
+    final_cols = [col for col in preferred_order if col in events_df.columns]
+    # Add any remaining columns
+    remaining_cols = [col for col in events_df.columns if col not in final_cols]
+    final_cols.extend(remaining_cols)
+
+    events_df = events_df[final_cols]
+
+    # Rename columns for clarity
+    rename_map = {
+        'symbol': 'Symbol',
+        'direction': 'Breakout_Direction',
+        'start_date': 'Squeeze_Start',
+        'end_date': 'Squeeze_End',
+        'duration': 'Squeeze_Duration_Days',
+        'bb_width_before_breakout': 'BB_Width_Before_Breakout',
+        'min_bb_width': 'Min_BB_Width_During_Squeeze',
+        'move_5d': 'Price_Move_5D_%',
+        'move_10d': 'Price_Move_10D_%',
+        'move_20d': 'Price_Move_20D_%',
+        'price_at_breakout': 'Price_At_Breakout',
+        'breakout_close': 'Breakout_Close',
+        'current_squeeze_status': 'Current_Squeeze_Status',
+        'current_price': 'Current_Price'
+    }
+
+    events_df = events_df.rename(columns={k: v for k, v in rename_map.items() if k in events_df.columns})
+
+    return events_df
+
+
 def render_post_breakout():
     """Render post-breakout analysis page"""
     st.title("📈 Post-Breakout Analysis")
@@ -2952,7 +3049,7 @@ def render_post_breakout():
     st.divider()
 
     # Tabs for different views
-    tab1, tab2, tab3 = st.tabs(["🔥 Fired Squeezes", "📊 Performance Analysis", "📋 All Results"])
+    tab1, tab2, tab3, tab4 = st.tabs(["🔥 Fired Squeezes", "📊 Performance Analysis", "📋 All Results", "📥 Historical Export"])
 
     with tab1:
         st.subheader("🔥 Recently Fired Squeezes")
@@ -3192,6 +3289,144 @@ def render_post_breakout():
                     if st.button("🔄 Refresh Scan", use_container_width=True):
                         st.session_state.current_page = "Scanner"
                         st.rerun()
+
+    with tab4:
+        st.subheader("📥 Historical Post-Breakout Data Export")
+        st.markdown("""
+        Generate comprehensive historical squeeze data for **ALL scanned stocks** -
+        not just fired squeezes. This includes price movements after each historical
+        breakout (5-day, 10-day, 20-day returns).
+        """)
+
+        # Show info about what will be exported
+        st.info("""
+        **What's included in the export:**
+        - All historical squeeze events for each scanned stock
+        - Breakout direction (Bullish/Bearish/Invalid)
+        - Squeeze duration and BB width metrics
+        - Price moves: 5-day, 10-day, and 20-day % returns after each breakout
+        - Current squeeze status and price
+        """)
+
+        # Get list of symbols from scan results
+        if 'symbol' in results_df.columns:
+            symbols = results_df['symbol'].tolist()
+            st.write(f"**{len(symbols)} stocks** available for historical analysis")
+
+            # Period selection for historical data
+            col1, col2 = st.columns([2, 1])
+            with col1:
+                export_period = st.selectbox(
+                    "Historical Data Period",
+                    options=["6 Months", "1 Year", "2 Years"],
+                    index=0,
+                    help="Select how much historical data to analyze",
+                    key="export_period_select"
+                )
+            with col2:
+                period_map = {"6 Months": "6mo", "1 Year": "1y", "2 Years": "2y"}
+                selected_period = period_map[export_period]
+
+            st.divider()
+
+            # Generate button
+            if st.button("🔄 Generate Historical Data", type="primary", use_container_width=True):
+                with st.spinner(f"Analyzing historical data for {len(symbols)} stocks..."):
+                    # Create progress bar
+                    progress_bar = st.progress(0)
+                    status_text = st.empty()
+
+                    def update_progress(current, total, symbol):
+                        progress_bar.progress(current / total)
+                        status_text.text(f"Processing {current}/{total}: {symbol}")
+
+                    # Generate the data
+                    historical_df = generate_all_stocks_post_breakout_data(
+                        symbols,
+                        period=selected_period,
+                        progress_callback=update_progress
+                    )
+
+                    progress_bar.empty()
+                    status_text.empty()
+
+                    if not historical_df.empty:
+                        # Store in session state for download
+                        st.session_state.historical_export_df = historical_df
+
+                        st.success(f"✅ Generated {len(historical_df)} historical breakout events!")
+
+                        # Show summary stats
+                        col1, col2, col3, col4 = st.columns(4)
+                        with col1:
+                            st.metric("Total Events", len(historical_df))
+                        with col2:
+                            if 'Breakout_Direction' in historical_df.columns:
+                                bullish = len(historical_df[historical_df['Breakout_Direction'] == 'BULLISH'])
+                                st.metric("Bullish", bullish)
+                        with col3:
+                            if 'Breakout_Direction' in historical_df.columns:
+                                bearish = len(historical_df[historical_df['Breakout_Direction'] == 'BEARISH'])
+                                st.metric("Bearish", bearish)
+                        with col4:
+                            unique_stocks = historical_df['Symbol'].nunique() if 'Symbol' in historical_df.columns else 0
+                            st.metric("Stocks with Data", unique_stocks)
+                    else:
+                        st.warning("No historical breakout data found for the selected stocks.")
+
+            # Show preview and download if data exists
+            if 'historical_export_df' in st.session_state and not st.session_state.historical_export_df.empty:
+                st.divider()
+                st.subheader("📋 Data Preview")
+
+                historical_df = st.session_state.historical_export_df
+
+                # Show preview (first 100 rows)
+                st.dataframe(
+                    historical_df.head(100),
+                    use_container_width=True,
+                    hide_index=True,
+                    height=400
+                )
+
+                if len(historical_df) > 100:
+                    st.caption(f"Showing first 100 of {len(historical_df)} rows")
+
+                # Download button
+                st.divider()
+                csv_data = historical_df.to_csv(index=False)
+                st.download_button(
+                    label="📥 Download Complete Historical Data (CSV)",
+                    data=csv_data,
+                    file_name=f"all_stocks_historical_breakouts_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
+                    mime="text/csv",
+                    use_container_width=True,
+                    type="primary"
+                )
+
+                # Show column descriptions
+                with st.expander("📖 Column Descriptions"):
+                    st.markdown("""
+                    | Column | Description |
+                    |--------|-------------|
+                    | **Symbol** | Stock ticker symbol |
+                    | **Breakout_Direction** | BULLISH, BEARISH, or INVALID |
+                    | **Squeeze_Start** | Date squeeze began |
+                    | **Squeeze_End** | Date squeeze ended (breakout) |
+                    | **Squeeze_Duration_Days** | Number of days in squeeze |
+                    | **BB_Width_Before_Breakout** | Bollinger Band width % just before breakout |
+                    | **Min_BB_Width_During_Squeeze** | Tightest BB width during squeeze |
+                    | **Price_Move_5D_%** | % price change 5 days after breakout |
+                    | **Price_Move_10D_%** | % price change 10 days after breakout |
+                    | **Price_Move_20D_%** | % price change 20 days after breakout |
+                    | **Price_At_Breakout** | Stock price when squeeze fired |
+                    | **Current_Squeeze_Status** | Current status (if available) |
+                    | **Current_Price** | Current stock price (if available) |
+
+                    **Note:** INVALID direction means the breakout didn't align with 200 DMA position.
+                    """)
+        else:
+            st.warning("No symbol data available in scan results.")
 
     # Back to scanner button
     st.divider()
