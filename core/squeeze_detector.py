@@ -223,8 +223,10 @@ def scan_single_stock(symbol: str, company_name: str = '',
         if above_dma_200 is not None:
             if momentum > 0:  # Bullish signal
                 signal_valid = above_dma_200
-            else:  # Bearish signal
+            elif momentum < 0:  # Bearish signal
                 signal_valid = not above_dma_200
+            else:  # Neutral momentum does not imply bullish/bearish invalidation
+                signal_valid = True
 
         return {
             'symbol': symbol,
